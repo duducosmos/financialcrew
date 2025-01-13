@@ -20,5 +20,5 @@ class BaseAgent:
         )
 
     @property
-    def agent(self):
+    def agent(self) -> Agent:
         return self._agent

@@ -17,5 +17,5 @@ class BaseTask:
         )
 
     @property
-    def task(self):
+    def task(self) -> Task:
         return self._task

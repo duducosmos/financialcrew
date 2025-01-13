@@ -34,3 +34,4 @@ from .contentwriter import *
 from .editor import *
 from .scraper import *
 from .websearcher import *
+from .schema import *
