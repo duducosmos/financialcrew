@@ -42,7 +42,7 @@ from langchain_openai import ChatOpenAI
 load_dotenv()
 
 
-BASEURL = "http://192.168.100.123:11434"
+BASEURL = "http://localhost:11434"
 MODEL = "llama3.1"
 
 agents = {
@@ -61,7 +61,7 @@ agents = {
     )
 }
 
-agent_llm = agents["gemmini"]
+agent_llm = agents["ollama"]
 
 
 crew = create_crew(agent_llm)
