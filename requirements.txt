@@ -1,0 +1,12 @@
+crewai[tools]
+duckduckgo_search
+langchain-core
+langchain-ollama
+langchain-openai
+ollama
+pandas
+pydantic
+yfinance
+tabulate
+streamlit
+python-dotenv
