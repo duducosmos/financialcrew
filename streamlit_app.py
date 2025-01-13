@@ -28,6 +28,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import streamlit as st
+
 from crewproject import create_crew
 from crewai import LLM
 from dotenv import load_dotenv
@@ -39,26 +41,39 @@ from langchain_openai import ChatOpenAI
 load_dotenv()
 
 # Configuração do LLM
-agent_llm = ChatOpenAI(
-    temperature=0.0,
-    model_name="gpt-3.5-turbo"
-)
+# agent_llm = ChatOpenAI(
+#     temperature=0.0,
+#     model_name="gpt-3.5-turbo"
+# )
 
 
 BASEURL = "http://192.168.100.123:11434"
 MODEL = "llama3.1"
 
 
-# agent_llm = LLM(
-#     base_url=BASEURL,
-#     model=f"ollama/{MODEL}",
-#     api_key="your-api-key"
-# )
+agent_llm = LLM(
+    base_url=BASEURL,
+    model=f"ollama/{MODEL}",
+    api_key="your-api-key"
+)
 
 crew = create_crew(agent_llm)
 
-result = crew.kickoff(inputs={
-                      "topic": "Para o período de 01 de janeiro de 2024 até 01 deJaneiro de 2025 e intervalo de '1wk'."
-                      "Como foi o resultado financeiro para Weg no IBOVESPA em 2024?"
-                      })
-print(result)
+# result = crew.kickoff(inputs={
+#                       "topic": "Para o período de 01 de janeiro de 2024 até 01 deJaneiro de 2025 e intervalo de '1wk'."
+#                       "Como foi o resultado financeiro para Weg no IBOVESPA em 2024?"
+#                       })
+# print(result)
+
+# Para o período de 01 de janeiro de 2024 até 01 deJaneiro de 2025 e intervalo de '1wk'. Como foi o resultado financeiro para Weg no IBOVESPA em 2024?
+st.title("Gerador de Relatório de Mercado de Ações.")
+
+
+prompt = st.chat_input("Qual a sua questão? ")
+if prompt:
+    with st.spinner('Generating Report. Please Wait...'):
+        result = crew.kickoff(inputs={
+            "topic": prompt
+        })
+
+    st.write(result.raw)

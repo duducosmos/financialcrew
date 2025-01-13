@@ -19,6 +19,6 @@ class SiteScraperTask(BaseTask):
                 "   - Conclusion: Provide insights and summarize the findings.\n"
                 "3. Ensure the report is structured clearly and written in markdown format, with each section containing at least 2-3 paragraphs."
             ),
-            expected_output="A well-structured financial report in markdown format, ready for publication.",
+            expected_output="A well-structured financial report in markdown format, ready for publication. With Links as Bibliograph reference.",
             agent=agent
         )
