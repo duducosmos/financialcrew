@@ -125,7 +125,7 @@ class CrewFromYaml:
         )
 
     @staticmethod
-    def create_agent(config: dict, tools: list, llm: LLM) -> Agent:
+    def create_agent(config: dict, llm: LLM, tools: list = []) -> Agent:
         return Agent(
             config=config,
             tools=tools,

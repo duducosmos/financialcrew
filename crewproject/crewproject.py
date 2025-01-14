@@ -43,32 +43,31 @@ def create_crew(llm: LLM, crewai_yaml) -> Crew:
     duckduckgotool = DuckDuckGoTool()
     scraptool = ScrapeWebsiteTool()
 
-
     crew_from_yaml = CrewFromYaml(crewai_yaml)
     agents = crew_from_yaml.agents
     taks = crew_from_yaml.tasks
 
     web_researcher = CrewFromYaml.create_agent(
         agents["webseracher"],
-        [duckduckgotool],
-        llm
+        llm,
+        [duckduckgotool]
+
     )
 
     site_scraper = CrewFromYaml.create_agent(
         agents["scraper"],
-        [scraptool],
-        llm
+        llm,
+        [scraptool]
     )
 
     content_writer = CrewFromYaml.create_agent(
         agents["writer"],
-        [financialtool],
-        llm
+        llm,
+        [financialtool]
     )
 
     editor = CrewFromYaml.create_agent(
         agents["editor"],
-        [],
         llm
     )
 

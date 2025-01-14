@@ -37,12 +37,12 @@ import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from langchain_openai import ChatOpenAI
-
+import re
 
 load_dotenv()
 
 
-BASEURL = "http://192.168.100.123/:11434"
+BASEURL = "http://192.168.100.123:11434/"
 MODEL = "llama3.1"
 
 agents = {
@@ -64,10 +64,21 @@ agents = {
 agent_llm = agents["ollama"]
 
 
-crew = create_crew(agent_llm)
+crew = create_crew(agent_llm, "agents_task.yaml")
 
 # Para o período de 01 de janeiro de 2024 até 01 deJaneiro de 2025 e intervalo de '1wk'. Como foi o resultado financeiro para Weg no IBOVESPA em 2024?
 st.title("Gerador de Relatório de Mercado de Ações.")
+
+
+def st_markdown(markdown_string):
+    parts = re.split(r"!\[(.*?)\]\((.*?)\)", markdown_string)
+    for i, part in enumerate(parts):
+        if i % 3 == 0:
+            st.markdown(part)
+        elif i % 3 == 1:
+            title = part
+        else:
+            st.image(part)  # Add caption if you want -> , caption=title)
 
 
 prompt = st.chat_input("Qual a sua questão? ")
@@ -77,4 +88,6 @@ if prompt:
             "topic": prompt
         })
 
-    st.write(result.raw)
+    st_markdown(result.raw)
+
+    # st.write(result.raw)
