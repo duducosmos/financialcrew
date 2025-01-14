@@ -42,7 +42,7 @@ from langchain_openai import ChatOpenAI
 load_dotenv()
 
 
-BASEURL = "http://localhost:11434"
+BASEURL = "http://192.168.100.123/:11434"
 MODEL = "llama3.1"
 
 agents = {
