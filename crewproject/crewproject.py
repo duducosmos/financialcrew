@@ -28,30 +28,54 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-
+from crewai import LLM
 from crewai import Crew
 from crewai_tools import ScrapeWebsiteTool
 
-from .agents import WebSearcherAgent, ScraperAgent, ContentWriterAgent, EditorAgent
 from .tools import FinancialTool, DuckDuckGoTool
-from .tasks import WebSearchTask, SiteScraperTask, WriterTask, EditorTask
+
+from .crewfromyaml import CrewFromYaml
 
 
-def create_crew(llm):
+def create_crew(llm: LLM, crewai_yaml) -> Crew:
 
     financialtool = FinancialTool()
     duckduckgotool = DuckDuckGoTool()
     scraptool = ScrapeWebsiteTool()
 
-    web_researcher = WebSearcherAgent([duckduckgotool], llm).agent
-    site_scraper = ScraperAgent([scraptool], llm).agent
-    content_writer = ContentWriterAgent([financialtool], llm).agent
-    editor = EditorAgent([], llm).agent
 
-    research_task = WebSearchTask(web_researcher).task
-    scrape_task = SiteScraperTask(site_scraper).task
-    write_task = WriterTask(content_writer).task
-    edit_task = EditorTask(editor).task
+    crew_from_yaml = CrewFromYaml(crewai_yaml)
+    agents = crew_from_yaml.agents
+    taks = crew_from_yaml.tasks
+
+    web_researcher = CrewFromYaml.create_agent(
+        agents["webseracher"],
+        [duckduckgotool],
+        llm
+    )
+
+    site_scraper = CrewFromYaml.create_agent(
+        agents["scraper"],
+        [scraptool],
+        llm
+    )
+
+    content_writer = CrewFromYaml.create_agent(
+        agents["writer"],
+        [financialtool],
+        llm
+    )
+
+    editor = CrewFromYaml.create_agent(
+        agents["editor"],
+        [],
+        llm
+    )
+
+    research_task = CrewFromYaml.create_task(taks["search"], web_researcher)
+    scrape_task = CrewFromYaml.create_task(taks["scrap"], site_scraper)
+    write_task = CrewFromYaml.create_task(taks["write"], content_writer)
+    edit_task = CrewFromYaml.create_task(taks["edit"], editor)
 
     crew = Crew(
         agents=[web_researcher, site_scraper, content_writer, editor],
