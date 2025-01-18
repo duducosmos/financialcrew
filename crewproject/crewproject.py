@@ -48,7 +48,7 @@ def create_crew(llm: LLM, crewai_yaml) -> Crew:
     taks = crew_from_yaml.tasks
 
     web_researcher = CrewFromYaml.create_agent(
-        agents["webseracher"],
+        agents["websearcher"],
         llm,
         [duckduckgotool]
 
@@ -72,7 +72,7 @@ def create_crew(llm: LLM, crewai_yaml) -> Crew:
     )
 
     research_task = CrewFromYaml.create_task(taks["search"], web_researcher)
-    scrape_task = CrewFromYaml.create_task(taks["scrap"], site_scraper)
+    scrape_task = CrewFromYaml.create_task(taks["scrape"], site_scraper)
     write_task = CrewFromYaml.create_task(taks["write"], content_writer)
     edit_task = CrewFromYaml.create_task(taks["edit"], editor)
 

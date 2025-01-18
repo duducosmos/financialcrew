@@ -20,7 +20,7 @@ class DuckDuckGoTool(BaseTool):
     args_schema: Type[BaseModel] = DuckDuckGoToolInput
 
     def _run(self, query: str) -> str:
-        ddg_results = DDGS().text(query, max_results=5)
+        ddg_results = DDGS().text(query, max_results=3)
         df = pd.DataFrame(ddg_results)
         return pd.DataFrame({"links": df["href"].tolist()}).to_json(index=False)
 

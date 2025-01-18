@@ -42,8 +42,8 @@ import re
 load_dotenv()
 
 
-BASEURL = "http://192.168.100.123:11434/"
-MODEL = "llama3.1"
+BASEURL = "http://192.168.100.123:11434"
+MODEL = "llama3.2"
 
 agents = {
     "gemmini": LLM(
@@ -61,13 +61,12 @@ agents = {
     )
 }
 
-agent_llm = agents["ollama"]
+agent_llm = agents["gpt"]
 
 
 crew = create_crew(agent_llm, "agents_task.yaml")
 
-# Para o período de 01 de janeiro de 2024 até 01 deJaneiro de 2025 e intervalo de '1wk'. Como foi o resultado financeiro para Weg no IBOVESPA em 2024?
-st.title("Gerador de Relatório de Mercado de Ações.")
+# Para o período de 01 de janeiro de 2024 até 01 de Janeiro de 2025 e intervalo de '1wk'. Como foi o resultado financeiro para PETR4.SA no IBOVESPA em 2024?
 
 
 def st_markdown(markdown_string):
@@ -78,7 +77,11 @@ def st_markdown(markdown_string):
         elif i % 3 == 1:
             title = part
         else:
-            st.image(part)  # Add caption if you want -> , caption=title)
+            st.image(part)
+
+
+st.set_page_config(page_title='Stock Report AI', page_icon="./images/icon/favicon.ico",
+                   layout='wide', initial_sidebar_state='auto')
 
 
 prompt = st.chat_input("Qual a sua questão? ")
@@ -89,5 +92,3 @@ if prompt:
         })
 
     st_markdown(result.raw)
-
-    # st.write(result.raw)

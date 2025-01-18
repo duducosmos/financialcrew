@@ -1,77 +1,82 @@
 agents:
-
-  webseracher:
+  websearcher:
     role: Web Researcher
     goal: >
-      Collect links related to the topic: {topic}
+      Identify and collect relevant links about the topic: {topic}, ensuring they are credible and up-to-date.
     backstory: >
-      You're performing research on {topic}, focusing on gathering relevant links for further analysis.
+      You specialize in online research, focusing on gathering high-quality links related to {topic} for further analysis by other agents.
+
 
   scraper:
     role: Site Scraper
     goal: >
-      Scrape text from the websites provided by the Web Researcher and generate a summary of the findings.
+      Process each URL individually, extract and summarize the content, and generate a consolidated summary of all findings.
     backstory: >
-      You're extracting text data from the provided links to support further analysis on {topic}.
-      Additionally, you create a summary of the key information gathered from the sites, limited to 250 words.
-      Organized links as Bibliograph reference.
-      OBS: The ScrapeWebsiteTool has as input the variable `website_url` that is a string with link or url of site.
+      You extract and summarize text data from each website in the provided list of URLs. For each URL, you generate a summary of up to 250 words. After processing all URLs, you create a final summary incorporating all findings and organize the URLs as bibliographic references.
 
   writer:
     role: Content Writer
     goal: >
-        Write a comprehensive financial report based on the data provided 
-        by the Site Scraper and the `Financial tool`.
+      Create a detailed financial report based on the summarized data from the Site Scraper and insights from the `Financial Tool` from {topic}.
     backstory: >
-        You're tasked with creating a detailed financial report on {topic}.
-        This report should include:\n
-        1. An introduction summarizing the overall research efforts.\n
-        2. A financial analysis section with details, tables, and numerical 
-        summaries from `Financial tool`.\n
-        3. A conclusion summarizing the findings and providing insights.
+      You are responsible for synthesizing research findings and financial data into a comprehensive markdown report that includes visuals and actionable insights.
 
   editor:
     role: Editor
     goal: >
-      Edit the financial report to align with journalistic and organizational standards.
+      Review and refine the financial report to ensure it meets professional standards and is ready for publication.
     backstory: >
-      You refine the financial report to ensure it is polished, aligns with the organization's voice, and follows best practices.
+      You improve the clarity, accuracy, and presentation of the report, ensuring it adheres to journalistic standards and is aligned with organizational style.
 
 
 tasks:
   search:
     description: >
-      Research the latest trends and news about {topic}. Provide a list of relevant links.
+      Perform an online search on {topic} and compile a list of high-quality, relevant links.
     expected_output: >
-      A list of links relevant to {topic}.
+      A curated list of 5-10 credible links directly related to {topic}.
 
-  scrap:
+  scrape:
     description: >
-      1. Use the summary and scraped text from the Site Scraper, along with data from the FinancialTool, to craft a financial report.\n
-      2. The report should have the following sections:\n
-         - Introduction: Overview of the research conducted.\n
-         - Financial Analysis: Include tables and summaries of financial data.\n
-         - Conclusion: Provide insights and summarize the findings.\n
-      3. Ensure the report is structured clearly and written in markdown format, with each section containing at least 2-3 paragraphs.
+      1. Process each URL in the provided list one at a time.
+      2. For each URL, extract the content and generate a summary of up to 250 words.
+      3. Combine all summaries into a final comprehensive summary.
+      4. Include all URLs as references in the final output.
     expected_output: >
-      A well-structured financial report in markdown format, ready for publication. With Links as Bibliograph reference.
+      A markdown document containing:
+      1. Individual summaries for each URL (up to 250 words each).
+      2. A comprehensive summary combining all findings.
+      3. A list of URLs formatted as bibliographic references.
 
   write:
     description: >
-      1. Scrape the content from the links provided by the Web Researcher.\n
-      2. Generate a summary of key findings from the scraped content, limited to 250 words.\n
-      OBS: The ScrapeWebsiteTool has as input the variable `website_url` that is a string with link or url of site.
-
+      Write a financial report in markdown format using:
+      1. The summary and data from the Site Scraper.
+      2. Numerical and graphical insights generated by the Financial Tool.
+      The report should include:
+      - Title: A concise and relevant title.
+      - Introduction: Overview of the research.
+      - Financial Analysis: Detailed insights with tables and charts.
+      - Conclusion: Final considerations and actionable insights.
+      - References: Links and tools used.
     expected_output: >
-      A JSON containing the text scraped from the websites and a concise summary of key findings.
+      A markdown-formatted financial report with:
+      1. Clear structure and professional tone.
+      2. Tables and graphs generated from the Financial Tool.
+      3. Properly cited references.
 
   edit:
-    description: Proofread and edit the financial report for grammatical errors, clarity, and alignment with the brand's voice.
+    description: >
+      Proofread and edit the financial report to:
+      1. Correct grammatical errors.
+      2. Enhance clarity and readability.
+      3. Ensure the report is aligned with organizational standards and written in PT-BR.
     expected_output: >
-      A polished and publication-ready, the final resport must be in  PT-BR, financial report in markdown format with:
-      1- Title: A clean and short title based on the research.\n
-      2- Introduction: General view of the report and research done.\n
-      3- A short review, with 250 words, about the information searched on websites.\n
-      4- Financial Analysis: The analysis based in the research with tables and solid informationn\n
-      5- Final Consideration: The final considerations about the report.\n
-      6- References: List of link and tools used to create the report.
+      A publication-ready markdown document in PT-BR, including:
+      1. A polished title.
+      2. An introduction summarizing the report.
+      3. Summary from text collected by scraper Agent
+      4. A concise review (250 words) of the online research findings.
+      5. A comprehensive financial analysis with tables and charts.
+      6. Final considerations offering insights and conclusions.
+      7. References to all links and tools used in the process.
